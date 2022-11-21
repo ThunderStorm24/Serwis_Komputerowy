@@ -41,7 +41,7 @@
 
 <form action="Signin" method="POST">
     <label class="form-label mt-3">Login</label>
-    <input type="text" class="form-control" name="Login"></input>
+    <input type="text" class="form-control" name="Login" th:value="${LoginV}"></input>
     <label class="form-label mt-3">Haslo</label>
     <input type="password" class="form-control" name="Password"></input>
     <button class="mt-4 btn btn-success">Zaloguj</button>

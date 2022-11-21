@@ -26,12 +26,10 @@ public class LoginController {
         String Role="";
         Integer ID_U=0;
         for(Uzytkownicy record : uzytkownik){
-            if(Login.equals(record.getLogin())){
+            if(Login.equals(record.getLogin()) && Password.equals(record.getPassword())){
                 ID_U = record.getId();
                 LogIn = record.getLogin();
                 Role = record.getRole();
-            }
-            if(Password.equals(record.getPassword())){
                 PassIn = record.getPassword();
             }
         }
@@ -41,6 +39,7 @@ public class LoginController {
             httpSession.setAttribute("Rola", Role);
             return "redirect:index";
         } else {
+            mod.addAttribute("LoginV",Login);
             mod.addAttribute("Message","Błędny login lub hasło!!! Spróbuj ponownie!!!");
             return "Login";
         }
