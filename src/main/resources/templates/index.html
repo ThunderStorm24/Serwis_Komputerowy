@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>Glowna Strona</title>
+	<link rel="stylesheet" th:href="@{/style/style.css}">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	 <script type="text/javascript">
+ 
+ let number = 0;
+	function setslide(slidenumber){
+		clearTimeout(timer1);
+		clearTimeout(timer2);
+		let button="<button class=\"btn btn-dark btn-lg m-1\" onclick=\"setslide("+number+")\">"+number+"</button>"
+		document.getElementById(number).innerHTML = button;
+		if(slidenumber==1){
+		number = 1;
+		disappear();
+		number--;
+		}
+		else{
+		number = slidenumber-1;
+		disappear();
+		}
+		setTimeout("changeslide()",500)
+	}
+	function disappear(){
+		let button="<button class=\"btn btn-dark btn-lg m-1\" onclick=\"setslide("+number+")\">"+number+"</button>"
+		document.getElementById(number).innerHTML = button;
+		$("#slides").fadeOut(500);
+	}
+ 
+	function changeslide(){
+	
+	number++; 
+	if(number>5) number=1;
+	
+	let file = "<img class=\"photo img-thumbnail\" src=\"Photos/Photo" + number + ".jpg\"/>";
+	let button="<button class=\"btn btn-dark btn-lg m-1 border border-light\" onclick=\"setslide("+number+")\">"+number+"</button>"
+	document.getElementById(number).innerHTML = button;
+	document.getElementById("slides").innerHTML = file;
+	$("#slides").fadeIn(500);
+	
+	timer1 = setTimeout("changeslide()",3000);
+	timer2 = setTimeout("disappear()",2500);	
+ }
+
+
+ </script>
+ 
+</head>
+<body class="bg-dark text-light" onload="changeslide()">
+
+<div>
+<div id="heading" class="bg-dark text-light d-flex justify-content-between">
+<div class="ms-3 p-2">Katowice, Jagielońska 10, Pn-Pt: 8:00-20:00, Sb: 8:00-18:00, Nd: Zamknięte</div>
+<div class="d-flex ">
+<div class="me-5 p-2">mail: komputronixer@gmail.com</div>
+<div class="me-3 p-2">telefon: +48 632 312 351</div>
+</div>
+</div>
+
+<div id="menu" class="menu d-flex">
+<div class="firma d-flex">
+Komputronixer
+</div>
+<div class="d-flex">
+<a href="index" class="active">Serwis</a>
+<a href="Cennik" class="">Cennik</a>
+<a href="Zamow" class="">Zamów</a>
+<a href="Kontakt" class="">Kontakt</a>
+    <div th:switch="${Rolaa}">
+<div th:case="'admin'"><a href="Profil" class=""><b th:text="${Loginn}"></b></a></div>
+<div th:case="'user'"><a href="Profil" class=""><b th:text="${Loginn}"></b></a></div>
+<div th:case="*"><a href="Login" class="">Rejestracja/Login</a></div>
+    </div>
+</div>
+</div>
+<div class="d-flex justify-content-center">
+<div id="content" class="text-center pt-3 blok w-100 m-5 p-5"><h1>WITAJ NA NASZEJ STRONIE!</h1>
+
+<div class="d-flex justify-content-between mt-5">
+<div class="ms-5 w-50 fs-5">
+<p class="ms">Firma Komputronixer, zajmuje się serwisowaniem komputerów stacjonarnych, laptopów jak i innych urządzeń elektronicznych.</p>
+<p>Jeśli masz jakiś problem skontaktuj się z nami podd numerem 632 312 351 lub pod adresem komputronixer@gmail.com.</p>
+<p>Jeśli chcesz zamówić usługę, zarejestruj się i skorzystaj z naszego zamawiania online. Tylko dla zarejestrowanych użytkowników</p>
+<p>Jeśli interesuję cię nasz cennik, zerknij na naszą podstronę <a href="Cennik">Cennik</a></p>
+<p>Jesteśmy na rynku od kilku lat! Jesteśmy niezawodną firmą oferującą wiele i oczekującą niewiele od naszych klientów. Nie jesteśmy
+aż tak drodzy na naszym rynku informatycznym, wszystkie ceny są ustawione pod koszt części, robocizny i trudności usługi. Zalecamy do zapoznania się
+i śmiałego kontaktowania z nami!!!</p>
+</div>
+<div>
+<div id="slides" class="mb-2">s</div>
+<div class="d-flex justify-content-center">
+<div id="1"><button class="btn btn-dark btn-lg m-1 border border-light" onclick="setslide(1)">1</button></div>
+<div id="2"><button class="btn btn-dark btn-lg m-1" onclick="setslide(2)">2</button></div>
+<div id="3"><button class="btn btn-dark btn-lg m-1" onclick="setslide(3)">3</button></div>
+<div id="4"><button class="btn btn-dark btn-lg m-1" onclick="setslide(4)">4</button></div>
+<div id="5"><button class="btn btn-dark btn-lg m-1" onclick="setslide(5)">5</button></div>
+</div>
+</div>
+
+</div>
+<div class="d-flex justify-content-between">
+
+</div>
+</div>
+</div>
+<footer class="bg-light text-center text-lg-start">
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.5);">
+    © 2022 Copyright:
+    <a class="text-dark" href="https://github.com/ThunderStorm24" target="_blank">ThunderStorm24</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+</div>
+
+
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</body>
+</html>

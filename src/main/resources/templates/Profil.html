@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <title>Profil Użytkownika</title>
+  <link rel="stylesheet" href="style/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body class="bg-dark text-light">
+
+<div>
+  <div id="heading" class="bg-dark text-light d-flex justify-content-between">
+    <div class="ms-3 p-2">Katowice, Jagielońska 10, Pn-Pt: 8:00-20:00, Sb: 8:00-18:00, Nd: Zamknięte</div>
+    <div class="d-flex ">
+      <div class="me-5 p-2">mail: komputronixer@gmail.com</div>
+      <div class="me-3 p-2">telefon: +48 632 312 351</div>
+    </div>
+  </div>
+
+  <div id="menu" class="menu d-flex">
+    <div class="firma d-flex">
+      Komputronixer
+    </div>
+    <div class="d-flex">
+      <a href="index" class="">Serwis</a>
+      <a href="Cennik" class="">Cennik</a>
+      <a href="Zamow" class="">Zamów</a>
+      <a href="Kontakt" class="">Kontakt</a>
+      <div th:switch="${Rolaa}">
+        <div th:case="'admin'"><a href="Profil" class="active"><b th:text="${Loginn}"></b></a></div>
+        <div th:case="'user'"><a href="Profil" class="active"><b th:text="${Loginn}"></b></a></div>
+        <div th:case="*"><a href="Login" class="active">Rejestracja/Login</a></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+<div th:switch="${Rolaa}">
+
+
+
+<div th:case="'admin'">
+  <h2 class="ms-3 mt-3">Witaj Adminie</h2>
+  <div th:each="uzytkownicy : ${uzytkownicy}" class="mt-5 ms-5">
+    <div th:if="${uzytkownicy.id}==${IDD}">
+      <div>Twoje ID: <b th:text="${uzytkownicy.id}+'.'"></b></div>
+      <div>Twój Login: <b th:text="${uzytkownicy.login}"></b></div>
+      <div>Twoje Imię:  <b th:text="${uzytkownicy.name}"> </b></div>
+      <div>Twoje Nazwisko: <b th:text="${uzytkownicy.surname}"> </b></div>
+      <div>Twoje Miasto: <b th:text="${uzytkownicy.city}"></b></div>
+      <div>Twój Adres:  <b th:text="${uzytkownicy.adres}"></b></div>
+      <div>Twój Numer Telefonu: <b th:text="${uzytkownicy.phone}"></b></div>
+      <form action="Edit"><input type="hidden" th:value="${uzytkownicy.id}" name="ID_U"></input><button>Edytuj</button></form>
+    </div>
+  </div>
+  <div class="mt-5 ms-5 me-5">
+
+    <form action="Profil">
+    <input type="number" name="ID_U" min="0" max="2147483647"></input>
+      <button>Znajdź</button>
+    </form>
+    <div th:if="${Znajdz}">
+      <table class="table table-bordered mt-3">
+        <thead class="table-dark border">
+        <tr> <th> ID <th> Rola <th> Login <th> Imie <th> Nazwisko <th> Miasto <th> Adres <th> Telefon <th style="width:250px"> Opcje
+        <tbody class="text-white">
+        <tr th:if="${uzytkownicy.id}==${Znajdz}" th:each="uzytkownicy : ${uzytkownicy}"> <th th:text="${uzytkownicy.id}+'.'"> <td th:text="${uzytkownicy.role}"> <td th:text="${uzytkownicy.login}"> <td th:text="${uzytkownicy.name}"> <td th:text="${uzytkownicy.surname}"> <td th:text="${uzytkownicy.city}"> <td th:text="${uzytkownicy.adres}"> <td th:text="${uzytkownicy.phone}">
+          <td>
+          <form action="Delete">
+            <input type="hidden" th:value="${uzytkownicy.id}" name="ID_U"></input>
+            <button>Usun</button>
+          </form>
+          <form action="Edit">
+            <input type="hidden" name="ID_U" th:value="${uzytkownicy.id}"></input>
+            <button>Edytuj</button>
+          </form>
+        </td>
+      </table>
+    </div>
+    <div th:unless="${Znajdz}" th:text="${Message}"></div>
+    <div th:text="${Message1}"></div>
+
+    <h1 class="counter-display ms-3">Elementy od <b th:text="${min}"></b> do <b th:text="${max}"></b></h1>
+    <button onClick="location='Profilo'" class="counter-minus">Poprzednia Strona</button>
+    <button onClick="location='Profild'" class="counter-plus">Następna strona</button>
+    <button class="ms-3" onClick="location='Dodajj'">Dodaj Użytkownika</button>
+    <table class="table table-bordered mt-3">
+      <thead class="table-dark border">
+      <tr> <th> ID <th> Rola <th> Login <th> Imie <th> Nazwisko <th> Miasto <th> Adres <th> Telefon <th> XD
+      <tbody class="text-white">
+    <tr th:if="${uzytkownicy.id} > ${min} and ${uzytkownicy.id} < ${max}" th:each="uzytkownicy : ${uzytkownicy}"> <th th:text="${uzytkownicy.id}+'.'"> <td th:text="${uzytkownicy.role}"> <td th:text="${uzytkownicy.login}"> <td th:text="${uzytkownicy.name}"> <td th:text="${uzytkownicy.surname}"> <td th:text="${uzytkownicy.city}"> <td th:text="${uzytkownicy.adres}"> <td th:text="${uzytkownicy.phone}"> <td><form action="Delete"><input type="hidden" th:value="${uzytkownicy.id}" name="ID_U"></input><button>Usun</button></form><form action="Edit"><input type="hidden" name="ID_U" th:value="${uzytkownicy.id}"></input><button>Edytuj</button></form>
+    </table>
+      <h1>Zamówienia w trakcie:</h1>
+    <h1>Zamówienia Skończone:</h1>
+
+  </div>
+  <a href="Logout">Wyloguj</a>
+</div>
+
+
+
+
+
+
+<div th:case="'user'">
+  <h2 class="ms-3 mt-3">Witaj Uzytkowniku</h2>
+  <div th:each="uzytkownicy : ${uzytkownicy}" class="mt-5 ms-5">
+    <div th:if="${uzytkownicy.id}==${IDD}">
+      <div>Twoje ID: <b th:text="${uzytkownicy.id}+'.'"></b></div>
+      <div>Twój Login: <b th:text="${uzytkownicy.login}"></b></div>
+      <div>Twoje Imię:  <b th:text="${uzytkownicy.name}"> </b></div>
+      <div>Twoje Nazwisko: <b th:text="${uzytkownicy.surname}"> </b></div>
+      <div>Twoje Miasto: <b th:text="${uzytkownicy.city}"></b></div>
+      <div>Twój Adres:  <b th:text="${uzytkownicy.adres}"></b></div>
+      <div>Twój Numer Telefonu: <b th:text="${uzytkownicy.phone}"></b></div>
+      <form action="Edit"><input type="hidden" th:value="${uzytkownicy.id}" name="ID_U"></input><button>Edytuj</button></form>
+    </div>
+  </div>
+  <a href="Logout">Wyloguj</a>
+  <h2 class="ms-3 mt-3">Twoje gotowe zamówienia:</h2>
+  <h2 class="ms-3 mt-3">Twoje zamówienia w trakcie:</h2>
+</div>
+
+
+
+
+</div>
+
+<footer class="bg-light text-center text-lg-start">
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.5);">
+    © 2022 Copyright:
+    <a class="text-dark" href="https://github.com/ThunderStorm24" target="_blank">ThunderStorm24</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+</body>
+</html>
