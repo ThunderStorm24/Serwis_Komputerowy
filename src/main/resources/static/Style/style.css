@@ -1,0 +1,48 @@
+.menu {
+  justify-content: space-between;
+  overflow: hidden;
+  background-color: #0f0f0f;
+  position: sticky;
+  /* Set the navbar to fixed position */
+  top: 0;
+  /* Position the navbar at the top of the page */
+  width: 100%;
+  /* Full width */
+  border-top-style: solid;
+  box-shadow: 0px 2px white;
+}
+
+.menu a {
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 28px 48px;
+  text-decoration: none;
+  font-size: 17px;
+  border-left-style: dotted;
+  border-color: white;
+}
+
+.menu a:hover {
+  background-color: rgb(82, 82, 82);
+  color: rgb(255, 255, 255);
+}
+
+.menu a.active {
+  background-color: #292626;
+  color: white;
+}
+.firma {
+  font-family: Impact;
+  font-size: 45px;
+  padding: 9px 35px;
+  color: rgb(116, 0, 0);
+}
+.blok {
+  background-color: rgb(68, 7, 7);
+  border: solid;
+}
+.photo{
+	width:600px;
+	height:400px;
+}
