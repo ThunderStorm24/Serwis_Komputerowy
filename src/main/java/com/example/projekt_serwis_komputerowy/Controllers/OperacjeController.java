@@ -1,9 +1,12 @@
-package com.example.projekt_serwis_komputerowy;
+package com.example.projekt_serwis_komputerowy.Controllers;
 
+import com.example.projekt_serwis_komputerowy.GetSet.Uzytkownicy;
+import com.example.projekt_serwis_komputerowy.Mappers.UzytkownicyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
@@ -74,4 +77,31 @@ public class OperacjeController {
         return "Edycja";
     }
 
-}
+    @PostMapping("/Zatwierdz")
+    public String Zatwierdz(HttpSession httpSession,
+                         @RequestParam(value = "id") String id,
+                         @RequestParam(value = "opis", defaultValue="Zamowienie zostało dodane do bazy i zaraz się nim zajmiemy!") String opis,
+                         @RequestParam(value = "stan", defaultValue="W trakcie") String stan,
+                         Model mod) {
+
+        String query = "UPDATE zamowienia set Stan_Realizacji=?,Opis=? where NR_Zamowienia=?";
+        jdbcTemplate.update(query, stan, opis, id);
+
+        return "redirect:Profil";
+    }
+
+    @PostMapping("/UsunZamowienie")
+    public String UsunZamowienie(HttpSession httpSession,
+                         @RequestParam(value = "id") String id,
+                         Model mod) {
+
+        String query1 = "DELETE FROM uslugi_zamowienia where NR_Zamowienia=?";
+        jdbcTemplate.update(query1, id);
+        String query = "DELETE FROM zamowienia where NR_Zamowienia=?";
+        jdbcTemplate.update(query, id);
+
+
+        return "redirect:Profil";
+    }
+
+    }

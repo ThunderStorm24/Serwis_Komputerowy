@@ -1,5 +1,7 @@
-package com.example.projekt_serwis_komputerowy;
+package com.example.projekt_serwis_komputerowy.Controllers;
 
+import com.example.projekt_serwis_komputerowy.GetSet.Uslugi;
+import com.example.projekt_serwis_komputerowy.Mappers.UslugiMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.ui.Model;

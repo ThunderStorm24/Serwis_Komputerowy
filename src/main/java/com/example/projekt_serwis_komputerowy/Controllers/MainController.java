@@ -1,14 +1,13 @@
-package com.example.projekt_serwis_komputerowy;
+package com.example.projekt_serwis_komputerowy.Controllers;
 
+import com.example.projekt_serwis_komputerowy.GetSet.Uslugi;
+import com.example.projekt_serwis_komputerowy.Mappers.UslugiMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
 import java.util.List;
 
 @org.springframework.stereotype.Controller

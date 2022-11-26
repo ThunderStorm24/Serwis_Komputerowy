@@ -1,5 +1,11 @@
-package com.example.projekt_serwis_komputerowy;
+package com.example.projekt_serwis_komputerowy.Controllers;
 
+import com.example.projekt_serwis_komputerowy.GetSet.Uslugi_Zamowienia;
+import com.example.projekt_serwis_komputerowy.GetSet.Uzytkownicy;
+import com.example.projekt_serwis_komputerowy.GetSet.Zamowienia;
+import com.example.projekt_serwis_komputerowy.Mappers.Uslugi_ZamowieniaMapper;
+import com.example.projekt_serwis_komputerowy.Mappers.UzytkownicyMapper;
+import com.example.projekt_serwis_komputerowy.Mappers.ZamowieniaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.ui.Model;
@@ -53,7 +59,7 @@ public class ProfilController {
 
         String SQL2 = "select * from uslugi_zamowienia";
         List<Uslugi_Zamowienia> uslugi_zamowienia = jdbcTemplate.query(SQL2, new Uslugi_ZamowieniaMapper());
-        mod.addAttribute("zamowienia", zamowienia);
+        mod.addAttribute("uslugi_zamowienia", uslugi_zamowienia);
 
 
         return "Profil";
@@ -72,16 +78,31 @@ public class ProfilController {
         String lowm=httpSession.getAttribute("min").toString();
         int max = Integer.parseInt(low);
         int min = Integer.parseInt(lowm);
-        min=min+10;
-        max=max+10;
-        httpSession.setAttribute("max",max);
-        httpSession.setAttribute("min",min);
 
         String SQL = "select * from uzytkownicy";
         List<Uzytkownicy> uzytkownik = jdbcTemplate.query(SQL, new UzytkownicyMapper());
+        int LastID=0;
+        for(Uzytkownicy record : uzytkownik){
+            LastID=record.getId();
+        }
+        if(max<LastID){
+            min=min+10;
+            max=max+10;
+        }
+        httpSession.setAttribute("max",max);
+        httpSession.setAttribute("min",min);
+
         mod.addAttribute("uzytkownicy",uzytkownik);
         mod.addAttribute("max",max);
         mod.addAttribute("min",min);
+
+        String SQL1 = "select * from zamowienia";
+        List<Zamowienia> zamowienia = jdbcTemplate.query(SQL1, new ZamowieniaMapper());
+        mod.addAttribute("zamowienia", zamowienia);
+
+        String SQL2 = "select * from uslugi_zamowienia";
+        List<Uslugi_Zamowienia> uslugi_zamowienia = jdbcTemplate.query(SQL2, new Uslugi_ZamowieniaMapper());
+        mod.addAttribute("uslugi_zamowienia", uslugi_zamowienia);
 
         return "Profil";
     }
@@ -101,6 +122,10 @@ public class ProfilController {
         int min = Integer.parseInt(lowm);
         min=min-10;
         max=max-10;
+        if(min<0){
+            min=0;
+            max=11;
+        }
         httpSession.setAttribute("max",max);
         httpSession.setAttribute("min",min);
 
@@ -109,6 +134,14 @@ public class ProfilController {
         mod.addAttribute("uzytkownicy",uzytkownik);
         mod.addAttribute("max",max);
         mod.addAttribute("min",min);
+
+        String SQL1 = "select * from zamowienia";
+        List<Zamowienia> zamowienia = jdbcTemplate.query(SQL1, new ZamowieniaMapper());
+        mod.addAttribute("zamowienia", zamowienia);
+
+        String SQL2 = "select * from uslugi_zamowienia";
+        List<Uslugi_Zamowienia> uslugi_zamowienia = jdbcTemplate.query(SQL2, new Uslugi_ZamowieniaMapper());
+        mod.addAttribute("uslugi_zamowienia", uslugi_zamowienia);
 
         return "Profil";
     }

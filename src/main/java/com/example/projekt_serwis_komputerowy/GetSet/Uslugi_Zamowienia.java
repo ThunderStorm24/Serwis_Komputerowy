@@ -1,4 +1,4 @@
-package com.example.projekt_serwis_komputerowy;
+package com.example.projekt_serwis_komputerowy.GetSet;
 
 public class Uslugi_Zamowienia {
 

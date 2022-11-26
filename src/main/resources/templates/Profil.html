@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <div id="menu" class="menu d-flex">
+  <nav id="menu" class="menu d-flex">
     <div class="firma d-flex">
       Komputronixer
     </div>
@@ -35,7 +35,7 @@
         <div th:case="*"><a href="Login" class="active">Rejestracja/Login</a></div>
       </div>
     </div>
-  </div>
+  </nav>
 
 </div>
 
@@ -47,7 +47,10 @@
 
 
 <div th:case="'admin'">
-  <h2 class="ms-3 mt-3">Witaj Adminie</h2>
+  <div class="d-flex justify-content-between">
+    <div class="ms-3 mt-3"><h2>Witaj Adminie</h2></div>
+    <div class="me-3 mt-3"><a href="index" class="btn btn-light">Powrót</a><a href="Logout" class="ms-2 btn btn-light">Wyloguj</a></div>
+  </div>
   <div th:each="uzytkownicy : ${uzytkownicy}" class="mt-5 ms-5">
     <div th:if="${uzytkownicy.id}==${IDD}">
       <div>Twoje ID: <b th:text="${uzytkownicy.id}+'.'"></b></div>
@@ -98,10 +101,91 @@
     <tr th:if="${uzytkownicy.id} > ${min} and ${uzytkownicy.id} < ${max}" th:each="uzytkownicy : ${uzytkownicy}"> <th th:text="${uzytkownicy.id}+'.'"> <td th:text="${uzytkownicy.role}"> <td th:text="${uzytkownicy.login}"> <td th:text="${uzytkownicy.name}"> <td th:text="${uzytkownicy.surname}"> <td th:text="${uzytkownicy.city}"> <td th:text="${uzytkownicy.adres}"> <td th:text="${uzytkownicy.phone}"> <td><form action="Delete"><input type="hidden" th:value="${uzytkownicy.id}" name="ID_U"></input><button>Usun</button></form><form action="Edit"><input type="hidden" name="ID_U" th:value="${uzytkownicy.id}"></input><button>Edytuj</button></form>
     </table>
       <h1>Zamówienia w trakcie:</h1>
-    <h1>Zamówienia Skończone:</h1>
+    <div class="d-flex flex-wrap">
+      <div class="d-flex flex-column rounded border border-danger mt-2 p-5 ms-2" style="width : 24%" th:each="zamowienia : ${zamowienia}" th:if="${zamowienia.stan_realizacji} == 'W trakcie'">
+        <div>Numer_Zamówienia: <b th:text="${zamowienia.nr_zamowienia}"></b> </div>
+        <div>Stan_Realizacji: <b th:text="${zamowienia.stan_realizacji}"></b></div>
+        <div>Data Zamówienia: <b th:text="${zamowienia.data_zamowienia}"></b></div>
+        <div>Data Realizacji: <b th:text="${zamowienia.data_realizacji}"></b></div>
+        <div>Opis: <b th:text="${zamowienia.opis}"></b></div>
+        <div>ID_Klienta: <b th:text="${zamowienia.id_klienta}"></b></div>
+        <div th:each="uslugi_zamowienia : ${uslugi_zamowienia}" th:if="${uslugi_zamowienia.nr_zamowienia}==${zamowienia.nr_zamowienia}">Uslugi: <b th:text="${uslugi_zamowienia.opis}"></b>
+        <div>W sumie do zapłacenia: <b th:text="${uslugi_zamowienia.koszt}"></b> zł</div>
+        </div>
+        <form method="POST" action="Zatwierdz" class="mt-2">
+          <input type="hidden" name="id" th:value="${zamowienia.nr_zamowienia}">
+        <div><textarea name="opis"></textarea></div>
+        <div>
+          <select name="stan">
+            <option value="W trakcie">W trakcie</option>
+            <option value="Gotowe">Gotowe</option>
+            <option value="Zakończone">Zakończone</option>
+          </select>
+        </div>
+          <div class="mt-2"><button>Zatwierdź</button></div>
+        </form>
+      </div>
+    </div>
+
+    <h1 class="mt-1">Zamówienia Gotowe:</h1>
+    <div class="d-flex flex-wrap">
+      <div class="d-flex flex-column rounded border border-success mt-2 p-5 ms-2" style="width : 24%" th:each="zamowienia : ${zamowienia}" th:if="${zamowienia.stan_realizacji} == 'Gotowe'">
+        <div>Numer_Zamówienia: <b th:text="${zamowienia.nr_zamowienia}"></b> </div>
+        <div>Stan_Realizacji: <b th:text="${zamowienia.stan_realizacji}"></b></div>
+        <div>Data Zamówienia: <b th:text="${zamowienia.data_zamowienia}"></b></div>
+        <div>Data Realizacji: <b th:text="${zamowienia.data_realizacji}"></b></div>
+        <div>Opis: <b th:text="${zamowienia.opis}"></b></div>
+        <div>ID_Klienta: <b th:text="${zamowienia.id_klienta}"></b></div>
+        <div th:each="uslugi_zamowienia : ${uslugi_zamowienia}" th:if="${uslugi_zamowienia.nr_zamowienia}==${zamowienia.nr_zamowienia}">Uslugi: <b th:text="${uslugi_zamowienia.opis}"></b>
+          <div>W sumie do zapłacenia: <b th:text="${uslugi_zamowienia.koszt}"></b> zł</div>
+        </div>
+        <form method="POST" action="Zatwierdz" class="mt-2">
+          <input type="hidden" name="id" th:value="${zamowienia.nr_zamowienia}">
+          <div><textarea name="opis"></textarea></div>
+          <div>
+            <select name="stan">
+              <option value="W trakcie">W trakcie</option>
+              <option value="Gotowe">Gotowe</option>
+              <option value="Zakończone">Zakończone</option>
+            </select>
+          </div>
+          <div class="mt-2"><button>Zatwierdź</button></div>
+        </form>
+      </div>
+    </div>
+
+    <h1 class="mt-1">Zamówienia Zakończone:</h1>
+    <div class="d-flex flex-wrap mb-5">
+      <div class="d-flex flex-column rounded border border-primary mt-2 p-5 ms-2" style="width : 24%" th:each="zamowienia : ${zamowienia}" th:if="${zamowienia.stan_realizacji} == 'Zakończone'">
+        <div>Numer_Zamówienia: <b th:text="${zamowienia.nr_zamowienia}"></b> </div>
+        <div>Stan_Realizacji: <b th:text="${zamowienia.stan_realizacji}"></b></div>
+        <div>Data Zamówienia: <b th:text="${zamowienia.data_zamowienia}"></b></div>
+        <div>Data Realizacji: <b th:text="${zamowienia.data_realizacji}"></b></div>
+        <div>Opis: <b th:text="${zamowienia.opis}"></b></div>
+        <div>ID_Klienta: <b th:text="${zamowienia.id_klienta}"></b></div>
+        <div th:each="uslugi_zamowienia : ${uslugi_zamowienia}" th:if="${uslugi_zamowienia.nr_zamowienia}==${zamowienia.nr_zamowienia}">Uslugi: <b th:text="${uslugi_zamowienia.opis}"></b>
+          <div>W sumie do zapłacenia: <b th:text="${uslugi_zamowienia.koszt}"></b> zł</div>
+        </div>
+        <form method="POST" action="Zatwierdz" class="mt-2">
+          <input type="hidden" name="id" th:value="${zamowienia.nr_zamowienia}">
+          <div><textarea name="opis"></textarea></div>
+          <div>
+            <select name="stan">
+              <option value="W trakcie">W trakcie</option>
+              <option value="Gotowe">Gotowe</option>
+              <option value="Zakończone">Zakończone</option>
+            </select>
+          </div>
+          <div class="mt-2"><button>Zatwierdź</button></div>
+        </form>
+        <form action="UsunZamowienie" method="POST">
+          <input type="hidden" name="id" th:value="${zamowienia.nr_zamowienia}">
+          <button>Usuń Zamówienie</button>
+        </form>
+      </div>
+    </div>
 
   </div>
-  <a href="Logout">Wyloguj</a>
 </div>
 
 
@@ -110,7 +194,11 @@
 
 
 <div th:case="'user'">
-  <h2 class="ms-3 mt-3">Witaj Uzytkowniku</h2>
+  <div class="d-flex justify-content-between">
+    <div class="ms-3 mt-3"><h2>Witaj Użytkowniku</h2></div>
+    <div class="me-3 mt-3"><a href="index" class="btn btn-light">Powrót</a><a href="Logout" class="ms-2 btn btn-light">Wyloguj</a></div>
+  </div>
+
   <div th:each="uzytkownicy : ${uzytkownicy}" class="mt-5 ms-5">
     <div th:if="${uzytkownicy.id}==${IDD}">
       <div>Twoje ID: <b th:text="${uzytkownicy.id}+'.'"></b></div>
@@ -123,10 +211,43 @@
       <form action="Edit"><input type="hidden" th:value="${uzytkownicy.id}" name="ID_U"></input><button>Edytuj</button></form>
     </div>
   </div>
-  <a href="Logout">Wyloguj</a>
-  <h2 class="ms-3 mt-3">Twoje gotowe zamówienia:</h2>
+
+
+
   <h2 class="ms-3 mt-3">Twoje zamówienia w trakcie:</h2>
-</div>
+  <div class="d-flex flex-wrap">
+
+    <div class="d-flex flex-column rounded border border-danger mt-2 p-5 ms-2" style="width : 24%" th:each="zamowienia : ${zamowienia}" th:if="${zamowienia.stan_realizacji} == 'W trakcie' and ${zamowienia.id_klienta} == ${IDD}">
+      <div>Numer_Zamówienia: <b th:text="${zamowienia.nr_zamowienia}"></b> </div>
+      <div>Stan_Realizacji: <b th:text="${zamowienia.stan_realizacji}"></b></div>
+      <div>Data Zamówienia: <b th:text="${zamowienia.data_zamowienia}"></b></div>
+      <div>Data Realizacji: <b th:text="${zamowienia.data_realizacji}"></b></div>
+      <div>Opis: <b th:text="${zamowienia.opis}"></b></div>
+      <div>ID_Klienta: <b th:text="${zamowienia.id_klienta}"></b></div>
+      <div th:each="uslugi_zamowienia : ${uslugi_zamowienia}" th:if="${uslugi_zamowienia.nr_zamowienia}==${zamowienia.nr_zamowienia}">Uslugi: <b th:text="${uslugi_zamowienia.opis}"></b>
+        <div>W sumie do zapłacenia: <b th:text="${uslugi_zamowienia.koszt}"></b> zł</div>
+      </div>
+  </div>
+    </div>
+
+
+
+  <h2 class="ms-3 mt-3">Twoje gotowe zamówienia:</h2>
+  <div class="d-flex flex-wrap mb-5">
+    <div class="d-flex flex-column rounded border border-success mt-2 p-5 ms-2" style="width : 24%" th:each="zamowienia : ${zamowienia}" th:if="${zamowienia.stan_realizacji} == 'Gotowe' and ${zamowienia.id_klienta} == ${IDD}">
+        <div>Numer_Zamówienia: <b th:text="${zamowienia.nr_zamowienia}"></b> </div>
+        <div>Stan_Realizacji: <b th:text="${zamowienia.stan_realizacji}"></b></div>
+        <div>Data Zamówienia: <b th:text="${zamowienia.data_zamowienia}"></b></div>
+        <div>Data Realizacji: <b th:text="${zamowienia.data_realizacji}"></b></div>
+        <div>Opis: <b th:text="${zamowienia.opis}"></b></div>
+        <div>ID_Klienta: <b th:text="${zamowienia.id_klienta}"></b></div>
+        <div th:each="uslugi_zamowienia : ${uslugi_zamowienia}" th:if="${uslugi_zamowienia.nr_zamowienia}==${zamowienia.nr_zamowienia}">Uslugi: <b th:text="${uslugi_zamowienia.opis}"></b>
+          <div>W sumie do zapłacenia: <b th:text="${uslugi_zamowienia.koszt}"></b> zł</div>
+        </div>
+      </div>
+  </div>
+
+  </div>
 
 
 
